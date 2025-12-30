@@ -1,5 +1,8 @@
 package com.kongju.middleware;
 
+import com.kongju.middleware.equipment.service.EquipmentService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +19,8 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.MessagingException;
 
+@Slf4j
+@RequiredArgsConstructor
 @EnableIntegration
 @SpringBootApplication
 public class KMiddlewareApplication {
@@ -45,6 +50,7 @@ public class KMiddlewareApplication {
         return adapter;
     }
 
+    private final EquipmentService equipmentService;
     @Bean
     @ServiceActivator(inputChannel = "mqttInputChannel")
     public MessageHandler handler() {
@@ -53,6 +59,11 @@ public class KMiddlewareApplication {
             @Override
             public void handleMessage(Message<?> message) throws MessagingException {
                 System.out.println(message.getPayload());
+
+                String payload = message.getPayload().toString();
+                log.info("Received MQTT message: {}", payload);
+                // 메시지 처리 및 저장
+                equipmentService.processAndSaveData(payload);
             }
 
         };

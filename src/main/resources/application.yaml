@@ -1,3 +1,18 @@
 spring:
   application:
     name: k-middleware
+
+# DB연동
+  datasource:
+    url: jdbc:mysql://localhost:3306/mes-database?useSSL=false&serverTimezone=Asia/Seoul
+    username: test
+    password: test
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
