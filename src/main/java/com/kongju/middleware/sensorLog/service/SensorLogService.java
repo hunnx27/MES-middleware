@@ -1,10 +1,10 @@
-package com.kongju.middleware.equipment.service;
+package com.kongju.middleware.sensorLog.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kongju.middleware.equipment.dto.EquipmentDataDto;
-import com.kongju.middleware.equipment.entity.EquipmentDataEntity;
-import com.kongju.middleware.equipment.repository.EquipmentDataRepository;
+import com.kongju.middleware.sensorLog.dto.SensorDto;
+import com.kongju.middleware.sensorLog.entity.SensorLogEntity;
+import com.kongju.middleware.sensorLog.repository.SensorLogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -13,36 +13,30 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class EquipmentService {
+public class SensorLogService {
 
-    private final EquipmentDataRepository repository;
+    private final SensorLogRepository repository;
+
     private final ObjectMapper objectMapper;
 
     @Transactional
     public void processAndSaveData(String jsonMessage) {
         try {
             // JSON 파싱
-            EquipmentDataDto dto = objectMapper.readValue(jsonMessage, EquipmentDataDto.class);
+            SensorDto dto = objectMapper.readValue(jsonMessage, SensorDto.class);
 
-            log.info("Received data: equipmentId={}, temperature={}, pressure={}, vibration={}, speed={}, timestamp={}",
+            log.info("Received data: equipmentId={}, temperature={}, pressure={}, vibration={}, speed={}, timestamp={}, timestampMs={}",
                     dto.getEquipmentId(), dto.getTemperature(), dto.getPressure(),
-                    dto.getVibration(), dto.getSpeed(), dto.getTimestamp());
+                    dto.getVibration(), dto.getSpeed(), dto.getTimestamp(), dto.getTimestampMs());
 
             // 데이터 검증 (선택사항)
             validateData(dto);
 
             // Entity 변환
-            EquipmentDataEntity entity = EquipmentDataEntity.builder()
-                    .equipmentId(dto.getEquipmentId())
-                    .temperature(dto.getTemperature())
-                    .pressure(dto.getPressure())
-                    .vibration(dto.getVibration())
-                    .speed(dto.getSpeed())
-                    .timestamp(dto.getTimestamp())
-                    .build();
+            SensorLogEntity entity = SensorLogEntity.fromMqtt(dto);
 
             // DB 저장
-            EquipmentDataEntity saved = repository.save(entity);
+            SensorLogEntity saved = repository.save(entity);
             log.info("Data saved successfully with ID: {}", saved.getId());
 
         } catch (Exception e) {
@@ -51,7 +45,7 @@ public class EquipmentService {
         }
     }
 
-    private void validateData(EquipmentDataDto dto) {
+    private void validateData(SensorDto dto) {
         if (dto.getEquipmentId() == null || dto.getEquipmentId().trim().isEmpty()) {
             throw new IllegalArgumentException("Equipment ID is required");
         }
