@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "equipment_data")
+@Table(name = "plc_production_log")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

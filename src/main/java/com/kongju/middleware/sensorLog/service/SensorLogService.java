@@ -23,7 +23,7 @@ public class SensorLogService {
     public void processAndSaveData(String jsonMessage) {
         try {
             // JSON 파싱
-            SensorDto dto = objectMapper.readValue(jsonMessage, SensorDto.class);
+                SensorDto dto = objectMapper.readValue(jsonMessage, SensorDto.class);
 
             log.info("Received data: equipmentId={}, temperature={}, pressure={}, vibration={}, speed={}, timestamp={}, timestampMs={}",
                     dto.getEquipmentId(), dto.getTemperature(), dto.getPressure(),

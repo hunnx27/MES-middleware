@@ -24,14 +24,14 @@ import org.springframework.messaging.MessagingException;
 @SpringBootApplication
 public class KMiddlewareApplication {
 
-	public static void main(String[] args) {
+    private final SensorLogService sensorLogService;
+
+    public static void main(String[] args) {
         new SpringApplicationBuilder(KMiddlewareApplication.class)
                 .web(WebApplicationType.NONE)
                 .run(args);
 //		SpringApplication.run(KMiddlewareApplication.class, args);
-	}
-
-
+    }
 
     @Bean
     public MessageChannel mqttInputChannel() {
