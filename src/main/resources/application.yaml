@@ -5,8 +5,8 @@ spring:
 # DB연동
   datasource:
     url: jdbc:mysql://localhost:3306/mes-database?useSSL=false&serverTimezone=Asia/Seoul
-    username: test
-    password: test
+    username: root
+    password: qhdks!@34
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -15,4 +15,4 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
