@@ -3,6 +3,7 @@ package com.kongju.middleware;
 import com.kongju.middleware.sensorLog.service.SensorLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -13,6 +14,7 @@ import org.springframework.integration.config.EnableIntegration;
 import org.springframework.integration.core.MessageProducer;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
+import org.springframework.integration.mqtt.support.MqttHeaders;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
@@ -37,11 +39,14 @@ public class KMiddlewareApplication {
     public MessageChannel mqttInputChannel() {
         return new DirectChannel();
     }
+
     @Bean
     public MessageProducer inbound() {
         MqttPahoMessageDrivenChannelAdapter adapter =
                 new MqttPahoMessageDrivenChannelAdapter("tcp://localhost:1883", "testClient",
-                        "topic1", "topic2");
+                        "factory/sensor/#"
+                        ,"factory/plc/#"
+                );
         adapter.setCompletionTimeout(5000);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(1);
@@ -49,7 +54,6 @@ public class KMiddlewareApplication {
         return adapter;
     }
 
-    private final SensorLogService equipmentService;
     @Bean
     @ServiceActivator(inputChannel = "mqttInputChannel")
     public MessageHandler handler() {
@@ -57,12 +61,17 @@ public class KMiddlewareApplication {
 
             @Override
             public void handleMessage(Message<?> message) throws MessagingException {
-                System.out.println(message.getPayload());
-
+                String topic = message.getHeaders().get(MqttHeaders.RECEIVED_TOPIC).toString();
+                System.out.println("handleMessage : TOPIC : " + topic);
                 String payload = message.getPayload().toString();
-                log.info("Received MQTT message: {}", payload);
-                // 메시지 처리 및 저장
-                equipmentService.processAndSaveData(payload);
+                if(topic.contains("factory/sensor/")){
+                    sensorLogService.processAndSaveData(payload);
+                }else if(topic.contains("factory/plc/")){
+                    // TODO
+                    //plcProductionLogService.processAndSaveData(payload)'\;
+                    System.out.println("TODO! factroy/plc/");
+                }
+
             }
 
         };
