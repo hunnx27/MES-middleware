@@ -1,13 +1,12 @@
-package com.kongju.middleware.plcProductionLog.entity.entity;
+package com.kongju.middleware.plcProductionLog.entity;
 
-import com.kongju.middleware.plcProductionLog.entity.dto.PlcSignalDto;
+import com.kongju.middleware.plcProductionLog.dto.PlcSignalDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity

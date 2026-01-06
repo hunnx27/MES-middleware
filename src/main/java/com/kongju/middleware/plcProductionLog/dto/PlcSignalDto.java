@@ -1,4 +1,4 @@
-package com.kongju.middleware.plcProductionLog.entity.dto;
+package com.kongju.middleware.plcProductionLog.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

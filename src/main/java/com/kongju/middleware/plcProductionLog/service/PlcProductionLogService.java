@@ -1,10 +1,10 @@
-package com.kongju.middleware.plcProductionLog.entity.service;
+package com.kongju.middleware.plcProductionLog.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kongju.middleware.plcProductionLog.entity.dto.PlcSignalDto;
-import com.kongju.middleware.plcProductionLog.entity.entity.PlcProductionLogEntity;
-import com.kongju.middleware.plcProductionLog.entity.repository.PlcProductionLogRepository;
+import com.kongju.middleware.plcProductionLog.dto.PlcSignalDto;
+import com.kongju.middleware.plcProductionLog.entity.PlcProductionLogEntity;
+import com.kongju.middleware.plcProductionLog.repository.PlcProductionLogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
