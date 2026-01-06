@@ -1,14 +1,16 @@
-package com.kongju.middleware.equipment.dto;
+package com.kongju.middleware.alarmLog.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class EquipmentDataDto {
+public class SensorDto {
 
     @JsonProperty("equipment_id")
     private String equipmentId;
@@ -26,5 +28,6 @@ public class EquipmentDataDto {
     private Integer speed;
 
     @JsonProperty("timestamp")
-    private Long timestamp;
+    private LocalDateTime timestamp;
+
 }

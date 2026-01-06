@@ -1,9 +1,8 @@
 package com.kongju.middleware;
 
-import com.kongju.middleware.equipment.service.EquipmentService;
+import com.kongju.middleware.sensorLog.service.SensorLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -50,7 +49,7 @@ public class KMiddlewareApplication {
         return adapter;
     }
 
-    private final EquipmentService equipmentService;
+    private final SensorLogService equipmentService;
     @Bean
     @ServiceActivator(inputChannel = "mqttInputChannel")
     public MessageHandler handler() {
